@@ -1,0 +1,284 @@
+
+
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+
+<div class="container" id="maincontainer">
+	<div class="row">
+		
+        
+        <div class="col-md-12">
+        <h4>Horse Data</h4>
+        <div class="table-responsive">
+
+ <!-- Load icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<form class="example" #searchForm="ngForm" (ngSubmit)="onSearchingHorse(searchForm)">
+  <input type="text" ngModel name="name" class="search-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+  <input type="text" ngModel name="desc" class="search-control" id="name" aria-describedby="emailHelp" placeholder="Description">
+  <input type="text" ngModel name="dob" class="search-control" id="name" aria-describedby="emailHelp" placeholder="Birthday">
+  <input type="text" ngModel name="sex" class="search-control" id="name" aria-describedby="emailHelp" placeholder="Sex">
+  <select  name="favoriteSport" class="search-selector"(change)="loadfavoriteSport(sport.value)" #sport>
+     <option *ngFor="let sport of favSports"   value="{{sport?.id}}">{{sport?.name}}</option>
+  </select>
+  <button type="submit"><i class="fa fa-search"></i></button>
+   </form>
+                                     
+         
+
+                
+              <table id="mytable" class="table table-bordred table-striped" >
+                   
+                   <thead>
+                   
+                   <th><input type="checkbox" id="checkall"  (change)="getAllChildren()"/></th>
+                   <th>Name</th>
+                    <th>Date of Birth</th>
+                     <th>Sex</th>
+                     <th></th>
+                     <th></th>
+                      <th>Edit</th>
+                       <th>Delete</th>
+                       <th>Details</th>
+                       <th><button (click)="onOpenAdd()" type="button" class="btn btn-secondary btn-sm">Add Horse </button></th>
+                       <th><button (click)="refresh()" type="button" class="btn btn-secondary btn-sm">Load all Horses </button></th>
+                   </thead>
+                   <div *ngIf="onAdding" class="adding-container">
+                    <form #addForm="ngForm" (ngSubmit)="onAddingHorse(addForm)">
+                     <label for="name">Name</label>
+                     <input type="text" ngModel name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+                     <label for="name">Description</label>
+                     <input type="text" ngModel name="desc" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Description">
+                     <label for="name">Date of Birth</label>
+                     <input type="text" ngModel name="dob" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Birthday">
+                     <label for="name">Sex</label>
+                     <input type="text" ngModel name="sex" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Sex">
+                     <label for="name">Sport</label>
+                     <td><select  name="favoriteSport" (change)="loadfavoriteSport(sport.value)"  #sport>
+                        <option *ngFor="let sport of favSports"   value="{{sport?.id}}">{{sport?.name}}</option>
+                     </select></td>
+                     <label for="name">DAD (check for errors)</label>
+                     <td><select  name="selectDad" (change)="loadParent(dad.value, true)"  #dad>
+                        <option *ngFor="let horse of allHorses"   value="{{horse?.id}}">{{horse?.name}},{{horse?.dob}},{{horse?.sex}}</option>
+                     </select></td>
+                     <label for="name">MOM (check for errors)</label>
+                     <td><select  name="selectMom" (change)="loadParent(mom.value, false)"  #mom>
+                        <option *ngFor="let horse of allHorses"   value="{{horse?.id}}">{{horse?.name}},{{horse?.dob}},{{horse?.sex}}</option>
+                     </select></td>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </form>
+                      
+                  </div>
+    
+                
+
+
+    <tbody>
+    
+    <tr *ngFor="let horse of horses">
+    <td ><input type="checkbox" class="checkthis" (change)="addParentsToList(horse)"/></td>
+    <td>{{horse?.name}}</td>
+    <td>{{horse?.dob}}</td>
+    <td>{{horse?.sex}}</td>
+    <th></th>
+    <th></th>
+    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button (click)="onOpenEdit(horse)"class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myEdit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button (click)="onDelete(horse)" class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    <td><p data-placement="top" data-toggle="tooltip" title="Details"><button (click)="onDetail(horse)" class="btn btn-danger btn-xs" data-title="Details" data-toggle="modal" data-target="#myModal" ><span class="glyphicon glyphicon-search"></span></button></p></td>
+        
+
+
+
+    <td>
+    </tr>
+    
+    </tbody>
+        
+</table>
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+<!-- Error Handling -->
+<div *ngIf="error" class="alert alert-danger alert-dismissible show" role="alert">
+   <strong>Error! </strong> {{ errorMessage }}
+   <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Detail Model -->
+  <div class="container">
+   <!-- The Modal -->
+   <div class="modal" id="myModal">
+     <div class="modal-dialog">
+       <div class="modal-content">
+       
+         <!-- Modal Header -->
+         <div class="modal-header">
+           <h4 class="modal-title">Detail View</h4>
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         
+         <!-- Modal body -->
+         <div class="modal-body">
+           <label for="name">Name</label>
+           <p><b>{{detailHorse?.name}}</b></p>
+           <label for="doB">Date of Birth</label>
+           <p><b>{{detailHorse?.dob}}</b></p>
+           <label for="desc">Description</label>
+           <p><b>{{detailHorse?.desc}}</b></p>
+           <label for="desc">Sport</label>
+           <p><b>{{detailHorse?.favoriteSport?.name}}</b></p>
+           <label for="desc">Horse dad</label>
+           <td><p data-placement="top" data-toggle="tooltip" title="Details"><button (click)="onDetail(detailHorse?.dad)" class="btn btn-danger btn-xs" data-title="Details" data-toggle="modal">Dad</button></p></td>
+           <label for="desc">Horse mom</label>
+           <td><p data-placement="top" data-toggle="tooltip" title="Details"><button (click)="onDetail(detailHorse?.mom)" class="btn btn-danger btn-xs" data-title="Details" data-toggle="modal">Mom</button></p></td>
+         </div>
+         
+         <!-- Modal footer -->
+         <div class="modal-footer">
+           <button type="button" (click)="onDelete(detailHorse)" class="btn btn-danger">Delete</button>
+           <button type="button" (click)="onOpenEdit(detailHorse)" class="btn btn-danger" data-toggle="modal" data-target="#myEdit">Edit</button>
+           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+           
+
+         </div>
+         
+       </div>
+     </div>
+   </div>
+   
+ </div>
+
+
+
+ <!-- Edit Model -->
+ <div class="container">
+   <!-- The Modal -->
+   <div class="modal" id="myEdit">
+     <div class="modal-dialog">
+       <div class="modal-content">
+       
+         <!-- Modal Header -->
+         <div class="modal-header">
+           <h4 class="modal-title">Editit Horse</h4>
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         
+         <!-- Modal body -->
+         <form #editForm="ngForm">
+            <input type="hidden" ngModel="{{editHorse?.id}}" name="id" >
+            <label for="name">Name</label>
+            <input type="text" ngModel="{{editHorse?.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+            <label for="name">Description</label>
+            <input type="text" ngModel="{{editHorse?.desc}}" name="desc" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Description">
+            <label for="name">Date of Birth</label>
+            <input type="text" ngModel="{{editHorse?.dob}}" name="dob" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Birthday">
+            <label for="name">Sex</label>
+            <input type="text" ngModel="{{editHorse?.sex}}" name="sex" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Sex">
+            <label for="name">Sport (JSON)</label>
+            <td><select  name="favoriteSport" (change)="loadfavoriteSport(sport1.value)"  #sport1>
+               <option *ngFor="let sport of favSports"   value="{{sport?.id}}">{{sport?.name}}</option>
+            </select></td>
+            <label for="name">DAD (check for errors)</label>
+                     <td><select  name="selectDad" (change)="loadParent(dad1.value, true)" #dad1>
+                        <option *ngFor="let horse of allHorses"   value="{{horse?.id}}">{{horse?.name}},{{horse?.dob}},{{horse?.sex}}</option>
+                     </select></td>
+            <label for="name">MOM (check for errors)</label>
+                     <td><select  name="selectMom" (change)="loadParent(mom1.value, false)" #mom1>
+                        <option *ngFor="let horse of allHorses"   value="{{horse?.id}}">{{horse?.name}},{{horse?.dob}},{{horse?.sex}}</option>
+                     </select></td>
+             
+           </form>
+         
+         <!-- Modal footer -->
+         <div class="modal-footer">
+            <button type="button" (click)="updateHorse(editForm, editHorse)" class="btn btn-primary" >Save Changes</button>
+           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+
+         </div>
+         
+       </div>
+     </div>
+   </div>
+   
+ </div>
+
+
+
+
+
+ <button id="openErrorButton" [hidden]="true" data-toggle="modal" data-target="#myError">Open Modal</button>
+ <!-- Error Modal -->
+<div class="modal fade" id="myError" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLongTitle">No Parent available</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+GET http://localhost:8080/horses/2
+###
+DELETE http://localhost:8080/horses/delete/1219
+###
+GET http://localhost:8080/horses/all
+###
+GET http://localhost:8080/horses/children
+###
+GET http://localhost:8080/sports/all
+###
+POST http://localhost:8080/horses/find
+Content-Type: application/json
+
+{
+    "name":  "female"
+}
+###
+POST http://localhost:8080/sports/add
+Content-Type: application/json
+
+{
+"name":  "Polo"
+}
+
+###
+POST http://localhost:8080/horses/add
+Content-Type: application/json
+
+
+{
+    "name": "Peterk",
+    "dob":  "2000-01-01",
+    "desc":  "Rennpferd",
+    "sex": "Male",
+    "favoriteSport": {"name":  "Polo"},
+    "dad": {"name":  "Peterkindneuuu", "dob":  "2001-01-01", "sex":  "Male"},
+    "mom": {"name":  "PeterM", "dob":  "2001-01-01", "sex":  "Female"}
+
+
+
+}
+
+###
+PUT http://localhost:8080/horses/update
+Content-Type: application/json
+
+
+{
+    "id": 3,
+    "name": "Peter",
+    "dob":  "2000-01-01",
+    "desc":  "Rennpferd",
+    "sex": "Male",
+    "mom": {"name":  "PeterM", "dob":  "2000-01-01", "sex":  "Female"}
+}

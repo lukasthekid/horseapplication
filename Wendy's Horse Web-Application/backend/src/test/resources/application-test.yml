@@ -1,4 +1,0 @@
-# YOU MUST NOT CHANGE THE TEST PROFILE
-spring:
-  datasource:
-    url: "jdbc:h2:mem:testdb;INIT=RUNSCRIPT FROM 'classpath:sql/createSchema.sql'"
